@@ -67,14 +67,32 @@ string caculator::toSuffix(string infix)
 	{
 		if('0'<=infix[i] && infix[i]<= '9')
 		{
+			int temp=0;
+			while(infix[i+temp]!='\0' && (('0'<=infix[i+temp] && infix[i+temp]<= '9') || (infix[i+temp+1]!='\0' && '0'<=infix[i+temp+1] && infix[i+temp+1]<= '9' && infix[i+temp]=='.')))
+			{
+				suffix+=infix[i+temp];
+				temp++;
+			}
+			suffix+=" ";
+			i+=temp-1;
+		}
+		else if(infix[i-1]=='(' && infix[i]=='-')
+		{
 			suffix+=infix[i];
+			int temp=1;
+			while(infix[i+temp]!='\0' && (('0'<=infix[i+temp] && infix[i+temp]<= '9') || (infix[i+temp+1]!='\0' && '0'<=infix[i+temp+1] && infix[i+temp+1]<= '9' && infix[i+temp]=='.')))
+			{
+				suffix+=infix[i+temp];
+				temp++;
+			}
+			suffix+=" ";
+			i+=temp-1;
 		}
 		else if(infix[i]=='(')
 		{
 			string temp="";
 			temp+=infix[i];
 			st.push(temp);
-			cout<<"现在入栈的是："<<infix[i]<<endl; 
 		}
 		else if(infix[i]==')')
 		{
@@ -82,50 +100,44 @@ string caculator::toSuffix(string infix)
 			{
 				if(st.top()=="(")
 				{
-					cout<<"现在出栈的是："<<st.pop()<<endl;
+					st.pop();
 					break;
 				}
-				string ccc=st.pop();
-				suffix+=ccc;
-				cout<<"现在出栈的是："<<ccc<<endl;
+				suffix+=st.pop();
+				suffix+=" ";
 			}
 		}
-		else if(infix[i]=='+' || infix[i]=='-' || infix[i]=='=' || infix[i]=='/' || infix[i]=='*' || infix[i]=='%' || infix[i]=='^')
+		else if(infix[i]=='+' || (infix[i]=='-' && infix[i-1]!='(') || infix[i]=='=' || infix[i]=='/' || infix[i]=='*' || infix[i]=='%' || infix[i]=='^')
 		{
 			if(st.empty())
 			{
 				string temp="";
 				temp+=infix[i];
 				st.push(temp);
-				cout<<"现在入栈的是："<<infix[i]<<endl; 
 			}
 			else if(!st.empty() && (getPriority(st.top()) < getPriority(infix[i])))
 			{
 				string temp="";
 				temp+=infix[i];
 				st.push(temp);
-				cout<<"现在入栈的是："<<infix[i]<<endl; 
 			}
 			else if(!st.empty() && (getPriority(st.top()) >= getPriority(infix[i])))
 			{
 				while(!st.empty() && (getPriority(st.top()) >= getPriority(infix[i])))
 				{
-					string ccc=st.pop();
-					suffix+=ccc;
-					cout<<"现在出栈的是："<<ccc<<endl;
+					suffix+=st.pop();
+					suffix+=" ";
 				}
 				string temp="";
 				temp+=infix[i];
 				st.push(temp);
-				cout<<"现在入栈的是："<<infix[i]<<endl; 
 			}
 		}
 	}
 	while(!st.empty())
 	{
-		string ccc=st.pop();
-		suffix+=ccc;
-		cout<<"现在出栈的是："<<ccc<<endl;
+		suffix+=st.pop();
+		suffix+=" ";
 	}
 	return suffix;
 }
