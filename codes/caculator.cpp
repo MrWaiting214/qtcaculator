@@ -256,6 +256,7 @@ void caculator::caculate()//调用计算
 		if(infix=="q")
 		{
 			cout<<"欢迎下次使用！"<<endl;
+			system("pause");
 			exit(0);
 		}
 		suffix=toSuffix(infix);

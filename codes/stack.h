@@ -8,6 +8,13 @@ class stack//ƒ£∞Â¿‡¡¥’ª
 		element<T> *head;
 	public:
 		stack():head(NULL){};
+		~stack()
+		{
+			while(!empty())
+			{
+				pop();
+			}
+		}
 		void push(T x);
 		T top();
 		T pop();
