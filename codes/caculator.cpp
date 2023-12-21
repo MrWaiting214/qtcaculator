@@ -4,7 +4,7 @@
 
 int caculator::getPriority(string operatr)
 {
-	if(operatr=="(")
+	if(operatr=="(") 
 	{
 		return 0;
 	}
@@ -31,7 +31,7 @@ int caculator::getPriority(string operatr)
 	return 0;
 }
 
-int caculator::getPriority(char operatr)
+int caculator::getPriority(char operatr) 
 {
 	if(operatr=='(')
 	{
@@ -59,7 +59,7 @@ int caculator::getPriority(char operatr)
 	}
 	return 0;
 }
-string caculator::toSuffix(string infix)
+string caculator::toSuffix(string infix) 
 {
 	stack st;
 	string suffix="";
@@ -76,9 +76,20 @@ string caculator::toSuffix(string infix)
 			suffix+=" ";
 			i+=temp-1;
 		}
-		else if(infix[i-1]=='(' && infix[i]=='-')
+		else if((i!=0 && infix[i-1]=='(' && infix[i]=='-') || (i==0 && infix[i]=='-'))
 		{
 			suffix+=infix[i];
+			int temp=1;
+			while(infix[i+temp]!='\0' && (('0'<=infix[i+temp] && infix[i+temp]<= '9') || (infix[i+temp+1]!='\0' && '0'<=infix[i+temp+1] && infix[i+temp+1]<= '9' && infix[i+temp]=='.')))
+			{
+				suffix+=infix[i+temp];
+				temp++;
+			}
+			suffix+=" ";
+			i+=temp-1;
+		}
+		else if((i!=0 && infix[i-1]=='(' && infix[i]=='+') || (i==0 && infix[i]=='+'))
+		{
 			int temp=1;
 			while(infix[i+temp]!='\0' && (('0'<=infix[i+temp] && infix[i+temp]<= '9') || (infix[i+temp+1]!='\0' && '0'<=infix[i+temp+1] && infix[i+temp+1]<= '9' && infix[i+temp]=='.')))
 			{
@@ -107,7 +118,7 @@ string caculator::toSuffix(string infix)
 				suffix+=" ";
 			}
 		}
-		else if(infix[i]=='+' || (infix[i]=='-' && infix[i-1]!='(') || infix[i]=='=' || infix[i]=='/' || infix[i]=='*' || infix[i]=='%' || infix[i]=='^')
+		else if((infix[i]=='+' && infix[i-1]!='(' && i!=0) || (infix[i]=='-' && infix[i-1]!='(' && i!=0) || infix[i]=='=' || infix[i]=='/' || infix[i]=='*' || infix[i]=='%' || infix[i]=='^')
 		{
 			if(st.empty())
 			{
@@ -133,9 +144,19 @@ string caculator::toSuffix(string infix)
 				st.push(temp);
 			}
 		}
+		else
+		{
+			cout<<"表达式出错";
+			return "";
+		}
 	}
 	while(!st.empty())
 	{
+		if(st.top()=="(")
+		{
+			cout<<"表达式出错";
+			return "";
+		}
 		suffix+=st.pop();
 		suffix+=" ";
 	}

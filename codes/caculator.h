@@ -6,8 +6,8 @@ class caculator
 {
 	public:
 		caculator(){};
-		string toSuffix(string infix);
-		int getPriority(string operatr);
+		string toSuffix(string ninfix);
+		int getPriority(string operatr); 
 		int getPriority(char operatr);
 };
 
