@@ -6,9 +6,12 @@ class caculator
 {
 	public:
 		caculator(){};
-		string toSuffix(string ninfix);
+		string toSuffix(string infix);
 		int getPriority(string operatr); 
 		int getPriority(char operatr);
+		double strToDouble(string str);
+		double suffixCacu(string suffix);
+		void caculate();
 };
 
 

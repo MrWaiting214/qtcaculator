@@ -2,13 +2,12 @@
 #define _ELEMENT_H
 #include <string>
 using namespace std;
+template<class T> 
 struct element
 {
-	string val;
-	element *next;
-	element():val("0"),next(NULL){}
-	element(string x):val(x),next(NULL){}
-	element(string x,element * next):val(x),next(next){}
+	T val;
+	element<T> *next;
+	element(T x):val(x),next(NULL){}
 }; 
 
 

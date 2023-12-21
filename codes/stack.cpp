@@ -1,34 +1,35 @@
-#include <iostream>
+/*#include <iostream>
+#include <string>
+#include "element.h"
 #include "stack.h"
 
 
-stack::stack()
+template<class T>
+void stack<T>::push(T x)
 {
-	head=new element;
+	element<T> *ele = new element<T>(x);
+	ele->next=head;
+	head=ele;
 }
-
-bool stack::empty()
+template<class T>
+T stack<T>::top()
 {
-	if(head->next==NULL)return true;
+	if(empty())throw"下溢";
+	return head->val;
+}
+template<class T>
+T stack<T>::pop()
+{
+	if(empty())throw"下溢";
+	T tempval=head->val;
+	element<T> *temp=head;
+	head=head->next;
+	delete temp;
+	return tempval;
+}
+template<class T>
+bool stack<T>::empty()
+{
+	if(head==NULL)return true;
 	return false;
-}
-
-string stack::top()
-{
-	if(empty())throw"下溢";
-	return head->next->val;
-}
-
-string stack::pop()
-{
-	if(empty())throw"下溢";
-	string temp=head->next->val;
-	head->next=head->next->next;
-	return temp;
-}
-void stack::push(string x)
-{
-	element *ele = new element(x);
-	ele->next=head->next;
-	head->next=ele;
-}
+}*/

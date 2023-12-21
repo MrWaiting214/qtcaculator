@@ -11,19 +11,6 @@ using namespace std;
 int main(int argc, char** argv) 
 {
 	caculator cc;
-	string infix;
-	string suffix;
-	while(true)
-	{
-		cout<<"请输入你想计算的算式(输入'q'则退出)：";
-		getline(cin,infix);
-		if(infix=="q")
-		{
-			cout<<"欢迎下次使用！"<<endl;
-			return 0;
-		}
-		suffix=cc.toSuffix(infix);
-		cout<<suffix<<endl;
-	}
+	cc.caculate();
 	return 0;
 }

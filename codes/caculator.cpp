@@ -1,7 +1,7 @@
 #include <iostream>
 #include "caculator.h"
-#include "stack.h"
-
+#include "stack.h" 
+#include <math.h>
 int caculator::getPriority(string operatr)
 {
 	if(operatr=="(") 
@@ -61,7 +61,19 @@ int caculator::getPriority(char operatr)
 }
 string caculator::toSuffix(string infix) 
 {
-	stack st;
+	if(infix=="")
+	{
+		return "";	
+	}
+	for(int i=0;i<infix.length()-1;i++)
+	{
+		if(!('0'<=infix[i] && infix[i]<= '9') && !('0'<=infix[i+1] && infix[i+1]<= '9') && !(infix[i+1]=='(' || infix[i+1]==')' || infix[i]=='(' || infix[i]==')'))
+		{
+			cout<<"表达式出错"<<endl;
+			return "";
+		}
+	}
+	stack<string> st;
 	string suffix="";
 	for(int i=0;i<infix.length();i++)
 	{
@@ -146,7 +158,7 @@ string caculator::toSuffix(string infix)
 		}
 		else
 		{
-			cout<<"表达式出错";
+			cout<<"表达式出错"<<endl;
 			return "";
 		}
 	}
@@ -154,7 +166,7 @@ string caculator::toSuffix(string infix)
 	{
 		if(st.top()=="(")
 		{
-			cout<<"表达式出错";
+			cout<<"表达式出错"<<endl;
 			return "";
 		}
 		suffix+=st.pop();
@@ -162,5 +174,95 @@ string caculator::toSuffix(string infix)
 	}
 	return suffix;
 }
+double caculator::strToDouble(string str)
+{
+	int i=0,j=-1;
+	double val=0.0;
+	double factor=1.0;
+	if(str[0]=='-') factor=-1.0;
+	if(factor==-1.0) i=1;
+	while(str[i]!='.' && str[i]!='\0')
+	{
+		val=val*10+(str[i]-'0');
+		i++;
+	}
+	if(str[i]=='.')
+	{
+		i++;
+		while(str[i]!='\0')
+		{
+			val+=(str[i]-'0')*pow(10,j);
+			j--;
+			i++;
+		}
+	}
+	return factor*val;
+}
+double caculator::suffixCacu(string suffix)
+{
+	
+	stack<double>st;
+	string str="";
+	double temp1,temp2;
+	int i=0,j=0;
+	while(suffix[i]!='\0')
+	{
+		if(('0'<=suffix[i] && '9'>=suffix[i]) || (suffix[i]=='-' && suffix[i+1]!='\0' && suffix[i+1]!=' ') || suffix[i]=='.')
+		{
+			str+=suffix[i];
+			if(suffix[i+1]=='\0' || suffix[i+1]==' ')
+			{
+				st.push(strToDouble(str));
+				str="";
+			}
+		}
+		else if(suffix[i]!=' ')
+		{
+			if(!st.empty())
+			{
+				temp2=st.pop();
+			}
+			if(!st.empty())
+			{
+				temp1=st.pop();
+			}
+			if(suffix[i]=='+')st.push(temp1+temp2);
+			else if(suffix[i]=='-')st.push(temp1-temp2);
+			else if(suffix[i]=='*')st.push(temp1*temp2);
+			else if(suffix[i]=='/')st.push(temp1/temp2);
+			else if(suffix[i]=='^')st.push(pow(temp1,temp2));
+			else if(suffix[i]=='%')
+			{
+				if(temp1-(int)temp1!=0 || temp2-(int)temp2!=0)
+				{
+					cout<<"对非整数使用求余符号，计算出的结果是错误的！"<<endl; 
+				}
+				st.push(((int)temp1+(int)temp2)%(int)temp2);
+			}
+		}
+		i++;
+	}
 
-
+	return st.top(); 
+}
+void caculator::caculate()
+{
+	string infix;
+	string suffix;
+	while(true)
+	{
+		cout<<"请输入你想计算的算式(输入'q'则退出)：";
+		getline(cin,infix);
+		if(infix=="q")
+		{
+			cout<<"欢迎下次使用！"<<endl;
+			exit(0);
+		}
+		suffix=toSuffix(infix);
+		if(suffix=="")
+		{
+			caculate();
+		}
+		cout<<"结果是："<<suffixCacu(suffix)<<endl;
+	}
+}
