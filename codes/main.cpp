@@ -10,7 +10,7 @@ using namespace std;
 
 int main(int argc, char** argv) 
 {
-	caculator cc;
-	cc.caculate();
+	caculator c;
+	c.caculate();//调用计算器计算 
 	return 0;
 }

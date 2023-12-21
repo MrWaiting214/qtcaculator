@@ -2,7 +2,7 @@
 #define _STACK_H
 #include "element.h"
 template<class T>
-class stack//链栈的定义 
+class stack//模板类链栈
 {
 	private:
 		element<T> *head;
@@ -14,20 +14,20 @@ class stack//链栈的定义
 		bool empty();
 };
 template<class T>
-void stack<T>::push(T x)
+void stack<T>::push(T x)//入栈函数 
 {
 	element<T> *ele = new element<T>(x);
 	ele->next=head;
 	head=ele;
 }
 template<class T>
-T stack<T>::top()
+T stack<T>::top()//返回栈顶函数 
 {
 	if(empty())throw"下溢";
 	return head->val;
 }
 template<class T>
-T stack<T>::pop()
+T stack<T>::pop()//出栈函数 
 {
 	if(empty())throw"下溢";
 	T tempval=head->val;
@@ -37,7 +37,7 @@ T stack<T>::pop()
 	return tempval;
 }
 template<class T>
-bool stack<T>::empty()
+bool stack<T>::empty()//判空函数 
 {
 	if(head==NULL)return true;
 	return false;
