@@ -229,10 +229,26 @@ double caculator::suffixCacu(string suffix)//计算后缀计算式
 			if(suffix[i]=='+')st.push(temp1+temp2);
 			else if(suffix[i]=='-')st.push(temp1-temp2);
 			else if(suffix[i]=='*')st.push(temp1*temp2);
-			else if(suffix[i]=='/')st.push(temp1/temp2);
-			else if(suffix[i]=='^')st.push(pow(temp1,temp2));
+			else if(suffix[i]=='/')
+			{
+				if(temp2==0)
+				{
+					cout<<"0不能做除数！"<<endl;
+					return 3.1415926535;//返回特定值作为错误标志 
+				}
+				st.push(temp1/temp2);
+			}
+			else if(suffix[i]=='^')
+			{
+				st.push(pow(temp1,temp2));
+			}
 			else if(suffix[i]=='%')
 			{
+				if(temp2==0)
+				{
+					cout<<"不能对0求余！"<<endl;
+					return 3.1415926535;//返回特定值作为错误标志 
+				}
 				if(temp1-(int)temp1!=0 || temp2-(int)temp2!=0)
 				{
 					cout<<"对非整数使用求余符号，计算出的结果是错误的！"<<endl; 
@@ -242,13 +258,13 @@ double caculator::suffixCacu(string suffix)//计算后缀计算式
 		}
 		i++;
 	}
-
 	return st.top(); 
 }
 void caculator::caculate()//调用计算 
 {
 	string infix;
 	string suffix;
+	double ans; 
 	while(true)
 	{
 		cout<<"请输入你想计算的算式(输入'q'则退出)：";
@@ -260,10 +276,15 @@ void caculator::caculate()//调用计算
 			exit(0);
 		}
 		suffix=toSuffix(infix);
-		if(suffix=="")
+		if(suffix=="")//接收错误，重新输入 
 		{
 			caculate();
 		}
-		cout<<"结果是："<<suffixCacu(suffix)<<endl;
+		ans=suffixCacu(suffix);
+		if(ans==3.1415926535)//接收错误，重新输入 
+		{
+			caculate();	
+		}
+		cout<<ans<<endl;
 	}
 }
