@@ -130,7 +130,7 @@ string caculator::toSuffix(string infix)//转化前缀计算式为后缀计算式
 				suffix+=" ";
 			}
 		}
-		else if((infix[i]=='+' && infix[i-1]!='(' && i!=0) || (infix[i]=='-' && infix[i-1]!='(' && i!=0) || infix[i]=='=' || infix[i]=='/' || infix[i]=='*' || infix[i]=='%' || infix[i]=='^')//处理各个运算符 
+		else if(infix[i]=='+' || infix[i]=='-' || infix[i]=='=' || infix[i]=='/' || infix[i]=='*' || infix[i]=='%' || infix[i]=='^')//处理各个运算符 
 		{
 			if(st.empty())//栈为空直接入栈 
 			{
@@ -138,13 +138,13 @@ string caculator::toSuffix(string infix)//转化前缀计算式为后缀计算式
 				temp+=infix[i];
 				st.push(temp);
 			}
-			else if(!st.empty() && (getPriority(st.top()) < getPriority(infix[i])))//若该字符比栈顶字符运算优先级低，直接入栈 
+			else if(getPriority(st.top()) < getPriority(infix[i]))//若该字符比栈顶字符运算优先级低，直接入栈 
 			{
 				string temp="";
 				temp+=infix[i];
 				st.push(temp);
 			}
-			else if(!st.empty() && (getPriority(st.top()) >= getPriority(infix[i])))///若该字符比栈顶字符运算优先级高，持续出栈，并将出栈字符加入后缀计算式字符串，最后再把该字符入栈 
+			else if(getPriority(st.top()) >= getPriority(infix[i]))///若该字符比栈顶字符运算优先级高，持续出栈，并将出栈字符加入后缀计算式字符串，最后再把该字符入栈 
 			{
 				while(!st.empty() && (getPriority(st.top()) >= getPriority(infix[i])))
 				{
