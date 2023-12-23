@@ -65,6 +65,16 @@ string caculator::toSuffix(string infix)//转化前缀计算式为后缀计算式
 	{
 		return "";	
 	}
+	if(infix[0]=='=' || infix[0]=='/' || infix[0]=='*' || infix[0]=='%' || infix[0]=='^')//无效输入返回 
+	{
+		cout<<"表达式出错"<<endl;
+		return "";	
+	}
+	if(infix[infix.length()-1]=='=' || infix[infix.length()-1]=='/' || infix[infix.length()-1]=='*' || infix[infix.length()-1]=='%' || infix[infix.length()-1]=='^')
+	{
+		cout<<"表达式出错"<<endl;
+		return "";
+	}
 	for(int i=0;i<infix.length()-1;i++)//检验是否有运算符连续出现 
 	{
 		if(!('0'<=infix[i] && infix[i]<= '9') && !('0'<=infix[i+1] && infix[i+1]<= '9') && !(infix[i+1]=='(' || infix[i+1]==')' || infix[i]=='(' || infix[i]==')'))
@@ -275,16 +285,16 @@ void caculator::caculate()//调用计算
 			system("pause");
 			exit(0);
 		}
-		suffix=toSuffix(infix);
+		suffix=toSuffix(infix);//转化为后缀算术表达式 
 		if(suffix=="")//接收错误，重新输入 
 		{
 			caculate();
 		}
-		ans=suffixCacu(suffix);
+		ans=suffixCacu(suffix);//计算后缀算术表达式 
 		if(ans==3.1415926535)//接收错误，重新输入 
 		{
 			caculate();	
 		}
-		cout<<ans<<endl;
+		cout<<"计算结果是："<<ans<<endl;
 	}
 }

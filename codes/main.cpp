@@ -10,7 +10,6 @@ using namespace std;
 
 int main(int argc, char** argv) 
 {
-	string temp;
 	caculator c;
 	c.caculate();//调用计算器计算 
 	system("pause");
